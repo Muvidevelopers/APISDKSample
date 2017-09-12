@@ -20,7 +20,7 @@
                 android:layout_height="@dimen/recylerimg_height"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/loginImageViewMarging_top"
+                android:layout_marginEnd="2dp"
                 android:layout_marginRight="@dimen/language_recycler_layout"
                 android:src="@drawable/unselected" />
 

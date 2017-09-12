@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="appBackgroundColor">#fff</color>
+  <!--  <color name="appBackgroundColor">#fff</color>
     <color name="textColor">#111111</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="languagePopupColor">#fff</color>
@@ -27,7 +27,7 @@
     <color name="selected_color">#000</color>
     <color name="unselected_color">#fff</color>
     <color name="alertPopupColor">#fff</color>
-<!--
+    <color name="editTextColor">#5c6873</color>-->
 
  <color name="appBackgroundColor">#fff</color>
  <color name="textColor">#111111</color>
@@ -119,6 +119,5 @@
  <color name="subtitle_list_textcolor">#808080</color>
  <color name="spinnerbackground">#e2e1e1</color>
  <color name="cast_crew_textcolor">#000000</color>
--->
 
 </resources>
