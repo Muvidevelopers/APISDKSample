@@ -119,7 +119,7 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        LogUtil.showLog("Abhishek", "Toolbar");
+        LogUtil.showLog("Muvi", "Toolbar");
 
         preferenceManager = PreferenceManager.getPreferenceManager(this);
         isLogin = preferenceManager.getLoginFeatureFromPref();
