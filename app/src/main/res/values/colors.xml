@@ -56,8 +56,8 @@
  <color name="preOrderButtonTextColor">#DDD</color>
  <color name="spinnerDropDownListColor">#000</color>
  <color name="leftMenuBackground">#fff</color>
- <color name="colorPrimary">#629de0</color>
- <color name="colorPrimaryDark">#4573A8</color>
+ <color name="colorPrimary">#df5349</color>
+ <color name="colorPrimaryDark">#c84a41</color>
  <color name="languagePopupColor">#fff</color>
  <color name="languagePopupFadeColor">#50696969</color>
  <color name="filterTextColor">#5c6873</color>
@@ -65,7 +65,7 @@
  <color name="nav_drawer_text_Color">#000000</color>
  <color name="style_circular_color">#999999</color>
  <color name="style_circular_color_2">#ff0400</color>
- <color name="button_background">#930f18</color>
+ <color name="button_background">#c84a41</color>
  <color name="iv_check_box_default_color">#5c6873</color>
  <color name="voucher_inactive_button">#c3c3c3</color>
  <color name="layout_background_color">#fdf3f3</color>
