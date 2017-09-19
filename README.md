@@ -10,4 +10,5 @@ if (NetworkStatus.getInstance().isConnected(this))
         
 Screenshots
 -----------
-[![mutt dark](https://github.com/Muvidevelopers/APISDKSample/blob/master/exhibitor.jpg)](https://github.com/Muvidevelopers/APISDKSample/blob/master/exhibitor.jpg)
+[![mutt dark](https://github.com/Muvidevelopers/APISDKSample/blob/master/Screenshot_1505812819.png)](https://github.com/Muvidevelopers/APISDKSample/blob/master/Screenshot_1505812819.png)
+[![mutt dark](https://github.com/Muvidevelopers/APISDKSample/blob/master/Screenshot_1505812910.png)](https://github.com/Muvidevelopers/APISDKSample/blob/master/Screenshot_1505812910.png)
