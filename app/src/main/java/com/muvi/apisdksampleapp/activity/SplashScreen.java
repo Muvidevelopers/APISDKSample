@@ -513,32 +513,6 @@ public class SplashScreen extends Activity implements GetIpAddressAsynTask.IpAdd
      */
     private void jumpToNextScreen() {
         Intent mIntent;
-        String loggedInStr = preferenceManager.getLoginStatusFromPref();
-        if ((languagePreference.getTextofLanguage(IS_ONE_STEP_REGISTRATION, DEFAULT_IS_ONE_STEP_REGISTRATION)
-                .trim()).equals("1")) {
-            if (loggedInStr != null) {
-                if (isSubscribed.trim().equals("1")) {
-                    mIntent = new Intent(SplashScreen.this, MainActivity.class);
-                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(mIntent);
-                    finish();
-                    overridePendingTransition(0, 0);
-                } else {
-                    mIntent = new Intent(SplashScreen.this, SubscriptionActivity.class);
-                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(mIntent);
-                    finish();
-                    overridePendingTransition(0, 0);
-                }
-            } else {
-                mIntent = new Intent(SplashScreen.this, RegisterActivity.class);
-                mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                overridePendingTransition(0, 0);
-                startActivity(mIntent);
-                finish();
-            }
-
-        } else {
 
             mIntent = new Intent(SplashScreen.this, MainActivity.class);
             mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -546,7 +520,6 @@ public class SplashScreen extends Activity implements GetIpAddressAsynTask.IpAdd
             finish();
             overridePendingTransition(0, 0);
         }
-    }
 
     @Override
     public void onPreExexuteListner() {
@@ -558,21 +531,7 @@ public class SplashScreen extends Activity implements GetIpAddressAsynTask.IpAdd
 
 
         if (NetworkStatus.getInstance().isConnected(this)) {
-            /*if (preferenceManager != null) {
-                String countryCodeStr = preferenceManager.getCountryCodeFromPref();
-
-                if (countryCodeStr == null) {
-                    GetIpAddressAsynTask asynGetIpAddress = new GetIpAddressAsynTask(this, this);
-                    asynGetIpAddress.executeOnExecutor(threadPoolExecutor);
-                } else {
-                    GetIpAddressAsynTask asynGetIpAddress = new GetIpAddressAsynTask(this, this);
-                    asynGetIpAddress.executeOnExecutor(threadPoolExecutor);
-                }
-            } else {
-                GetIpAddressAsynTask asynGetIpAddress = new GetIpAddressAsynTask(this, this);
-                asynGetIpAddress.executeOnExecutor(threadPoolExecutor);
-
-            }*/
+            
             GetIpAddressAsynTask asynGetIpAddress = new GetIpAddressAsynTask(this, this);
             asynGetIpAddress.executeOnExecutor(threadPoolExecutor);
         } else {
