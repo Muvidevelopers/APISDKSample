@@ -531,7 +531,7 @@ public class SplashScreen extends Activity implements GetIpAddressAsynTask.IpAdd
 
 
         if (NetworkStatus.getInstance().isConnected(this)) {
-            
+
             GetIpAddressAsynTask asynGetIpAddress = new GetIpAddressAsynTask(this, this);
             asynGetIpAddress.executeOnExecutor(threadPoolExecutor);
         } else {
