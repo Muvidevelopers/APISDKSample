@@ -1,10 +1,9 @@
 package com.muvi.apisdksampleapp;
 
 import android.app.Application;
-
-import com.home.apisdk.APIUrlConstant;
-import com.home.apisdk.apiController.SDKInitializer;
 import com.muvi.apisdksampleapp.util.LogUtil;
+import com.release.muvisdk.api.APIUrlConstant;
+import com.release.muvisdk.api.apiController.SDKInitializer;
 
 
 /**

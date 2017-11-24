@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.muvi.apisdksampleapp.R;
+import com.muvi.apisdksampleapp.activity.MovieDetailsActivity;
 import com.muvi.apisdksampleapp.model.SingleItemModel;
 import com.muvi.apisdksampleapp.preferences.PreferenceManager;
 import com.squareup.picasso.Picasso;
@@ -108,15 +109,15 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
             }else {
                 Picasso.with(mContext)
                         .load(singleItem.getImage())
-                        .placeholder(R.drawable.logo)   // optional
-                        .error(R.drawable.logo)      // optional
+                        .placeholder(R.drawable.new_logo)   // optional
+                        .error(R.drawable.new_logo)      // optional
                         .into(holder.itemImage);
             }
         }else{
             Picasso.with(mContext)
-                    .load(R.drawable.logo)
-                    .placeholder(R.drawable.logo)   // optional
-                    .error(R.drawable.logo)      // optional
+                    .load(R.drawable.new_logo)
+                    .placeholder(R.drawable.new_logo)   // optional
+                    .error(R.drawable.new_logo)      // optional
                     .into(holder.itemImage);
         }
 
@@ -148,22 +149,13 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                     String moviePermalink = itemsList.get(position).getPermalink();
                     String movieTypeId = itemsList.get(position).getVideoTypeId();
 
-               /*     Log.v("MUVI","HHH"+moviePermalink + movieTypeId);
+                    Log.v("MUVI","HHH"+moviePermalink + movieTypeId);
                     if ((movieTypeId.trim().equalsIgnoreCase("1")) || (movieTypeId.trim().equalsIgnoreCase("2")) || (movieTypeId.trim().equalsIgnoreCase("4"))) {
                         final Intent detailsIntent = new Intent(mContext, MovieDetailsActivity.class);
                         detailsIntent.putExtra(PERMALINK_INTENT_KEY, moviePermalink);
                         detailsIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         mContext.startActivity(detailsIntent);
-
-                    } else if ((movieTypeId.trim().equalsIgnoreCase("3"))) {
-                        final Intent detailsIntent = new Intent(mContext, ShowWithEpisodesActivity.class);
-                        detailsIntent.putExtra(PERMALINK_INTENT_KEY, moviePermalink);
-                        detailsIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        mContext.startActivity(detailsIntent);
-
                     }
-*/
-
                 }
             });
 

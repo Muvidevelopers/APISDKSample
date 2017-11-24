@@ -19,11 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.home.apisdk.apiController.GetImageForDownloadAsynTask;
-import com.home.apisdk.apiController.GetMenuListAsynctask;
-import com.home.apisdk.apiController.SDKInitializer;
-import com.home.apisdk.apiModel.MenuListInput;
-import com.home.apisdk.apiModel.MenuListOutput;
 import com.muvi.apisdksampleapp.R;
 import com.muvi.apisdksampleapp.fragment.FragmentDrawer;
 import com.muvi.apisdksampleapp.fragment.HomeFragment;
@@ -33,6 +28,11 @@ import com.muvi.apisdksampleapp.preferences.LanguagePreference;
 import com.muvi.apisdksampleapp.preferences.PreferenceManager;
 import com.muvi.apisdksampleapp.util.LogUtil;
 import com.muvi.apisdksampleapp.util.ProgressBarHandler;
+import com.release.muvisdk.api.apiController.GetImageForDownloadAsynTask;
+import com.release.muvisdk.api.apiController.GetMenuListAsynctask;
+import com.release.muvisdk.api.apiController.SDKInitializer;
+import com.release.muvisdk.api.apiModel.MenuListInput;
+import com.release.muvisdk.api.apiModel.MenuListOutput;
 
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
@@ -432,8 +432,6 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
             as.cancel(true);
         }
         super.onBackPressed();
-
-
     }
 
 

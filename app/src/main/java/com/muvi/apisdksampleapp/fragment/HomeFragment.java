@@ -26,11 +26,6 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.daimajia.slider.library.Tricks.ViewPagerEx;
-import com.home.apisdk.APIUrlConstant;
-import com.home.apisdk.apiController.GetLoadVideosAsync;
-import com.home.apisdk.apiModel.LoadVideoInput;
-import com.home.apisdk.apiModel.LoadVideoOutput;
 import com.muvi.apisdksampleapp.R;
 import com.muvi.apisdksampleapp.activity.MainActivity;
 import com.muvi.apisdksampleapp.adapter.RecyclerViewDataAdapter;
@@ -40,22 +35,20 @@ import com.muvi.apisdksampleapp.model.SingleItemModel;
 import com.muvi.apisdksampleapp.network.NetworkStatus;
 import com.muvi.apisdksampleapp.preferences.LanguagePreference;
 import com.muvi.apisdksampleapp.util.LogUtil;
-import com.muvi.apisdksampleapp.util.ProgressBarHandler;
 import com.muvi.apisdksampleapp.util.Util;
+import com.release.muvisdk.api.apiController.GetAppHomePageAsync;
+import com.release.muvisdk.api.apiController.GetLoadVideosAsync;
+import com.release.muvisdk.api.apiModel.AppHomePageOutput;
+import com.release.muvisdk.api.apiModel.HomePageBannerModel;
+import com.release.muvisdk.api.apiModel.HomePageInputModel;
+import com.release.muvisdk.api.apiModel.HomePageSectionModel;
+import com.release.muvisdk.api.apiModel.LoadVideoInput;
+import com.release.muvisdk.api.apiModel.LoadVideoOutput;
+
+import com.release.muvisdk.player.utils.ProgressBarHandler;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
@@ -67,20 +60,20 @@ import java.util.concurrent.TimeUnit;
 import static android.content.res.Configuration.SCREENLAYOUT_SIZE_LARGE;
 import static android.content.res.Configuration.SCREENLAYOUT_SIZE_MASK;
 import static android.content.res.Configuration.SCREENLAYOUT_SIZE_XLARGE;
-import static com.muvi.apisdksampleapp.preferences.LanguagePreference.DEFAULT_NO_CONTENT;
 import static com.muvi.apisdksampleapp.preferences.LanguagePreference.DEFAULT_NO_INTERNET_CONNECTION;
-import static com.muvi.apisdksampleapp.preferences.LanguagePreference.DEFAULT_SELECTED_LANGUAGE_CODE;
 import static com.muvi.apisdksampleapp.preferences.LanguagePreference.NO_CONTENT;
 import static com.muvi.apisdksampleapp.preferences.LanguagePreference.NO_INTERNET_CONNECTION;
-import static com.muvi.apisdksampleapp.preferences.LanguagePreference.SELECTED_LANGUAGE_CODE;
 import static com.muvi.apisdksampleapp.util.Constant.authTokenStr;
+import static com.release.muvisdk.player.utils.Util.DEFAULT_NO_CONTENT;
+import static com.release.muvisdk.player.utils.Util.DEFAULT_SELECTED_LANGUAGE_CODE;
+import static com.release.muvisdk.player.utils.Util.SELECTED_LANGUAGE_CODE;
 
 /**
  * Created by Muvi on 11/24/2016.
  */
-public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVideosAsyncListener {
+public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVideosAsyncListener, GetAppHomePageAsync.HomePageListener {
 
-
+    //    int bannerArray[] = {R.drawable.banner1};
     int videoHeight = 185;
     int videoWidth = 256;
 
@@ -113,8 +106,8 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
     ArrayList<SingleItemModel> singleItem;
 
     //AsynLoadImageUrls as = null;
-    AsynLoadMenuItems asynLoadMenuItems = null;
-    /* int banner[] = {R.drawable.banner1,R.drawable.banner2,R.drawable.banner3};
+    GetAppHomePageAsync asynLoadMenuItems = null;
+    /* int bannerArray[] = {R.drawable.banner1,R.drawable.banner2,R.drawable.banner3};
      int bannerL[] = {R.drawable.banner1_l,R.drawable.banner2_l,R.drawable.banner3_l};*/
     int corePoolSize = 60;
     int maximumPoolSize = 80;
@@ -144,7 +137,7 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
         languagePreference = LanguagePreference.getLanguagePreference(getActivity());
         LogUtil.showLog("MUVI", "device_id already created =" + Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID));
         String GOOGLE_FCM_TOKEN;
-       // LogUtil.showLog("MUVI", "google_id already created =" + languagePreference.getTextofLanguage( GOOGLE_FCM_TOKEN, DEFAULT_GOOGLE_FCM_TOKEN));
+        // LogUtil.showLog("MUVI", "google_id already created =" + languagePreference.getTextofLanguage( GOOGLE_FCM_TOKEN, DEFAULT_GOOGLE_FCM_TOKEN));
 
 
 
@@ -198,7 +191,10 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
 
             url_maps = new ArrayList<String>();
 
-            asynLoadMenuItems = new AsynLoadMenuItems();
+            HomePageInputModel homePageInputModel = new HomePageInputModel();
+            homePageInputModel.setAuthToken(authTokenStr);
+            homePageInputModel.setLang_code(languagePreference.getTextofLanguage(SELECTED_LANGUAGE_CODE, DEFAULT_SELECTED_LANGUAGE_CODE));
+            asynLoadMenuItems = new GetAppHomePageAsync(homePageInputModel, this, context);
             asynLoadMenuItems.executeOnExecutor(threadPoolExecutor);
 
 
@@ -229,12 +225,12 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
     }
 
 
-    private void StartAsyncTaskInParallel(AsynLoadMenuItems task) {
+  /*  private void StartAsyncTaskInParallel(AsynLoadMenuItems task) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         else
             task.execute();
-    }
+    }*/
 
 
     @Override
@@ -256,7 +252,7 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
 
         } else {
                /* if (counter >= 0 && counter >= menuList.size()-1) {
-                    Log.v("MUVI","COUNTER");
+                    LogUtil.showLog("MUVI","COUNTER");
                     loading_completed = true;
                 }*/
         }
@@ -270,7 +266,7 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
                 mProgressBarHandler.hide();
                 mProgressBarHandler = null;
             }
-        }catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
 
         }
         String movieImageStr = "";
@@ -292,7 +288,7 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
             singleItem.add(new SingleItemModel(movieImageStr, movieName, "", videoTypeIdStr, movieGenreStr, "", moviePermalinkStr, isEpisodeStr, "", "", isConverted, isPPV, isAPV));
         }
 
-            allSampleData.add(new SectionDataModel(menuList.get(counter).getName(), menuList.get(counter).getSectionId(), singleItem));
+        allSampleData.add(new SectionDataModel(menuList.get(counter).getName(), menuList.get(counter).getSectionId(), singleItem));
 
 
         if (NetworkStatus.getInstance().isConnected(getActivity())) {
@@ -311,6 +307,7 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
         return;
 
     }
+
 
     private class AsynLOADPicasso extends AsyncTask<Void, Void, Void> {
         @Override
@@ -414,7 +411,7 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
-                    Log.v("MUVI", "onScrollStateChanged");
+                    LogUtil.showLog("MUVI", "onScrollStateChanged");
                    *//* if (counter >= 0 && counter >= menuList.size()-1) {
                         adapter.swapItems();
                     }*//*
@@ -424,7 +421,7 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
 
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                       Log.v("MUVI","ONSCROLL");
+                       LogUtil.showLog("MUVI","ONSCROLL");
                   *//*  if (counter >= 0 && counter >= menuList.size()-1) {
                         adapter.swapItems();
                     }*//*
@@ -448,8 +445,8 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
 
 
                 /*    loading_completed = loading_completed + 1;
-                    Log.v("MUVI","loading_completed"+loading_completed);
-                    Log.v("MUVI","ui_completed"+ui_completed);*/
+                    LogUtil.showLog("MUVI","loading_completed"+loading_completed);
+                    LogUtil.showLog("MUVI","ui_completed"+ui_completed);*/
 
                     // default data
                     LoadVideoInput loadVideoInput = new LoadVideoInput();
@@ -492,8 +489,113 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
         }*/
     }
 
+    @Override
+    public void onHomePagePreExecuteStarted() {
+        mProgressBarHandler = new ProgressBarHandler(getActivity());
+        mProgressBarHandler.show();
+    }
 
-    private class AsynLoadMenuItems extends AsyncTask<Void, Void, Void> implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
+    @Override
+    public void onHomePagePostExecuteCompleted(AppHomePageOutput appHomePageOutput, int status, String message) {
+
+        if (mProgressBarHandler != null) {
+            mProgressBarHandler.hide();
+            mProgressBarHandler = null;
+        }
+
+        if (status == 200) {
+
+            if (singleItem != null && singleItem.size() > 0) {
+                singleItem.clear();
+            }
+
+            if (allSampleData != null && allSampleData.size() > 0) {
+                allSampleData.clear();
+            }
+            for (HomePageBannerModel model : appHomePageOutput.getHomePageBannerModels()) {
+                url_maps.add(model.getImage_path());
+            }
+
+            for (HomePageSectionModel section : appHomePageOutput.getHomePageSectionModel()) {
+                menuList.add(new GetMenuItem(section.getTitle(), section.getSection_id(), section.getStudio_id(), section.getLanguage_id()));
+            }
+
+
+            if (NetworkStatus.getInstance().isConnected(getActivity())) {
+
+                my_recycler_view.setLayoutManager(mLayoutManager);
+                adapter = new RecyclerViewDataAdapter(context, allSampleData, url_maps, firstTime, MainActivity.vertical);
+                my_recycler_view.setAdapter(adapter);
+                my_recycler_view.setVisibility(View.VISIBLE);
+
+
+                LoadVideoInput loadVideoInput = new LoadVideoInput();
+                loadVideoInput.setAuthToken(authTokenStr);
+                loadVideoInput.setLang_code(languagePreference.getTextofLanguage(SELECTED_LANGUAGE_CODE, DEFAULT_SELECTED_LANGUAGE_CODE));
+                loadVideoInput.setSection_id(menuList.get(counter).getSectionId());
+                asynLoadVideos = new GetLoadVideosAsync(loadVideoInput, HomeFragment.this, context);
+                asynLoadVideos.executeOnExecutor(threadPoolExecutor);
+                // default data
+                    /*asynLoadVideos = new AsynLoadVideos();
+                    asynLoadVideos.executeOnExecutor(threadPoolExecutor,menuList.get(counter).getSectionId());*/
+
+            } else {
+                noInternetLayout.setVisibility(View.VISIBLE);
+            }
+
+        } else {
+//            url_maps.add("https://d2gx0xinochgze.cloudfront.net/public/no-image-a.png");
+
+            for (HomePageBannerModel model : appHomePageOutput.getHomePageBannerModels()) {
+                url_maps.add(model.getImage_path());
+            }
+
+            if (firstTime == false) {
+                firstTime = true;
+
+                if (((context.getResources().getConfiguration().screenLayout & SCREENLAYOUT_SIZE_MASK) == SCREENLAYOUT_SIZE_LARGE) || ((context.getResources().getConfiguration().screenLayout & SCREENLAYOUT_SIZE_MASK) == SCREENLAYOUT_SIZE_XLARGE)) {
+                    for (int j = 0; j < url_maps.size(); j++) {
+                        DefaultSliderView textSliderView = new DefaultSliderView(context);
+                        textSliderView
+                                .description("")
+                                .image(url_maps.get(j))
+                                .setScaleType(BaseSliderView.ScaleType.Fit);
+                        // .setOnSliderClickListener(this);
+                        textSliderView.bundle(new Bundle());
+                        textSliderView.getBundle()
+                                .putString("extra", "");
+
+                        mDemoSlider.addSlider(textSliderView);
+                    }
+                } else {
+                    for (int j = 0; j < url_maps.size(); j++) {
+                        DefaultSliderView textSliderView = new DefaultSliderView(context);
+                        textSliderView
+                                .description("")
+                                .image(url_maps.get(j))
+                                .setScaleType(BaseSliderView.ScaleType.Fit);
+                        // .setOnSliderClickListener(this);
+                        textSliderView.bundle(new Bundle());
+                        textSliderView.getBundle()
+                                .putString("extra", "");
+
+                        mDemoSlider.addSlider(textSliderView);
+                    }
+                }
+            }
+            mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+            mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+            mDemoSlider.setDuration(10000);
+            //   mDemoSlider.addOnPageChangeListener(this);
+            mDemoSlider.getPagerIndicator().setVisibility(View.INVISIBLE);
+
+            sliderRelativeLayout.setVisibility(View.VISIBLE);
+
+        }
+        return;
+    }
+
+  /* class AsynLoadMenuItems extends AsyncTask<Void, Void, Void> implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
 
 
         String responseStr;
@@ -516,8 +618,8 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
                 httppost.addHeader("authToken", authTokenStr.trim());
                 httppost.addHeader("lang_code", languagePreference.getTextofLanguage(SELECTED_LANGUAGE_CODE, DEFAULT_SELECTED_LANGUAGE_CODE));
 
-              /*  httppost.addHeader("limit", "1");
-                httppost.addHeader("offset", String.valueOf(counter));*/
+              *//*  httppost.addHeader("limit", "1");
+                httppost.addHeader("offset", String.valueOf(counter));*//*
 
                 // Execute HTTP Post Request
                 try {
@@ -574,7 +676,7 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
 
                                 if (lengthBannerImagesArray > 0) {
                                     for (int i = 0; i < lengthBannerImagesArray; i++) {
-                                        url_maps.add(jsonBannerImageNode.getJSONObject(i).getString("mobile_view"));
+                                        url_maps.add(jsonBannerImageNode.getJSONObject(i).getString("original"));
 
                                     }
                                 } else {
@@ -699,7 +801,7 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
                         }
                     }
 
-                /*    for (int i = 0; i < url_maps.size(); i++) {
+                *//*    for (int i = 0; i < url_maps.size(); i++) {
 
                         DefaultSliderView textSliderView = new DefaultSliderView(context);
 
@@ -714,9 +816,9 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
                         textSliderView.getBundle()
                                 .putString("extra", "");
 
-                        mDemoSlider.addSlider(textSliderView);*/
+                        mDemoSlider.addSlider(textSliderView);*//*
 
-                      /*  DefaultSliderView textSliderView = new DefaultSliderView(context);
+                      *//*  DefaultSliderView textSliderView = new DefaultSliderView(context);
 
                         textSliderView
                                 .description("")
@@ -729,10 +831,10 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
                         textSliderView.getBundle()
                                 .putString("extra", "");
 
-                        mDemoSlider.addSlider(textSliderView);*/
+                        mDemoSlider.addSlider(textSliderView);*//*
                 } else {
                     // DefaultSliderView textSliderView = new DefaultSliderView(context);
-                  /*  textSliderView
+                  *//*  textSliderView
                             .description("")
                             .image(R.drawable.slider1)
                             .setScaleType(BaseSliderView.ScaleType.Fit)
@@ -742,7 +844,7 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
                     textSliderView.getBundle()
                             .putString("extra", "");
 
-                    mDemoSlider.addSlider(textSliderView);*/
+                    mDemoSlider.addSlider(textSliderView);*//*
 
                     if (((context.getResources().getConfiguration().screenLayout & SCREENLAYOUT_SIZE_MASK) == SCREENLAYOUT_SIZE_LARGE) || ((context.getResources().getConfiguration().screenLayout & SCREENLAYOUT_SIZE_MASK) == SCREENLAYOUT_SIZE_XLARGE)) {
                         for (int j = 0; j < url_maps.size(); j++) {
@@ -802,8 +904,8 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
                     asynLoadVideos.executeOnExecutor(threadPoolExecutor);
 
                     // default data
-                    /*asynLoadVideos = new AsynLoadVideos();
-                    asynLoadVideos.executeOnExecutor(threadPoolExecutor,menuList.get(counter).getSectionId());*/
+                    *//*asynLoadVideos = new AsynLoadVideos();
+                    asynLoadVideos.executeOnExecutor(threadPoolExecutor,menuList.get(counter).getSectionId());*//*
 
                 } else {
                     noInternetLayout.setVisibility(View.VISIBLE);
@@ -839,7 +941,7 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
         public void onPageScrollStateChanged(int state) {
 
         }
-    }
+    }*/
 
     /*private class AsynLoadImageUrls extends AsyncTask<Void, Void, Void> {
         String responseStr;
@@ -1336,9 +1438,9 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
             // TODO: check this.exception
             // TODO: do something with the feed
 
-            if (phandler != null && phandler.isShowing()) {
+           /* if (phandler != null && phandler.isShowing()) {
                 phandler.hide();
-            }
+            }*/
 
             LogUtil.showLog("MUVI", "HHH");
             loadui = new AsynLOADUI();
@@ -1348,8 +1450,8 @@ public class HomeFragment extends Fragment implements GetLoadVideosAsync.LoadVid
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            phandler = new ProgressBarHandler(getActivity());
-            phandler.show();
+          /*  phandler = new ProgressBarHandler(getActivity());
+            phandler.show();*/
 
         }
     }

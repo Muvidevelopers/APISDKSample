@@ -2,13 +2,17 @@ package com.muvi.apisdksampleapp.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.content.res.Configuration;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+
+import com.muvi.apisdksampleapp.R;
 import com.muvi.apisdksampleapp.model.LanguageModel;
 import com.muvi.apisdksampleapp.preferences.LanguagePreference;
 
@@ -18,13 +22,67 @@ import org.json.JSONObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import static com.release.muvisdk.player.utils.Util.BUTTON_OK;
+import static com.release.muvisdk.player.utils.Util.DEFAULT_BUTTON_OK;
+import static com.release.muvisdk.player.utils.Util.DEFAULT_NO_VIDEO_AVAILABLE;
+import static com.release.muvisdk.player.utils.Util.DEFAULT_SORRY;
+import static com.release.muvisdk.player.utils.Util.NO_VIDEO_AVAILABLE;
+import static com.release.muvisdk.player.utils.Util.SORRY;
 
 
 /**
  * Created by User on 24-07-2015.
  */
 public class Util {
+
+
+    public static String formateDateFromstring(String inputFormat, String outputFormat, String inputDate) {
+
+        Date parsed = null;
+        String outputDate = "";
+
+        SimpleDateFormat df_input = new SimpleDateFormat(inputFormat, java.util.Locale.getDefault());
+        SimpleDateFormat df_output = new SimpleDateFormat(outputFormat, java.util.Locale.getDefault());
+
+        try {
+
+            parsed = df_input.parse(inputDate);
+            outputDate = df_output.format(parsed);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            outputDate = "";
+        }
+        return outputDate;
+
+    }
+
+    public static int isDouble(String str) {
+        Double d = Double.parseDouble(str);
+        int i = d.intValue();
+        return i;
+    }
+
+    public static void showNoDataAlert(Context mContext) {
+        LanguagePreference languagePreference = LanguagePreference.getLanguagePreference(mContext);
+        AlertDialog.Builder dlgAlert = new AlertDialog.Builder(mContext, R.style.MyAlertDialogStyle);
+        dlgAlert.setMessage(languagePreference.getTextofLanguage(NO_VIDEO_AVAILABLE, DEFAULT_NO_VIDEO_AVAILABLE));
+        dlgAlert.setTitle(languagePreference.getTextofLanguage(SORRY, DEFAULT_SORRY));
+        dlgAlert.setPositiveButton(languagePreference.getTextofLanguage(BUTTON_OK, DEFAULT_BUTTON_OK), null);
+        dlgAlert.setCancelable(false);
+        dlgAlert.setPositiveButton(languagePreference.getTextofLanguage(BUTTON_OK, DEFAULT_BUTTON_OK),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        dlgAlert.create().show();
+    }
 
 
    public static boolean drawer_line_visibility = true;
