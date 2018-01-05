@@ -16,7 +16,7 @@
              android:id="@+id/headerView"
              android:layout_width="match_parent"
              android:layout_height="130dp"
-             android:src="@drawable/logo"
+             android:src="@drawable/new_logo"
              android:scaleType="fitCenter"
              android:layout_centerInParent="true" />
         &lt;!&ndash; <LinearLayout
@@ -77,10 +77,10 @@
         local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <ImageView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/fragmentlogoimg_height"
             android:layout_gravity="center"
-            android:src="@drawable/logo" />
+            android:src="@drawable/new_logo" />
 
     </android.support.v7.widget.Toolbar>
 

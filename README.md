@@ -10,5 +10,5 @@ You can find the procedure how to impliment the MUVI API SDK & will get response
         
 Screenshots
 -----------
-[![mutt dark](https://github.com/Muvidevelopers/APISDKSample/blob/master/Screenshot_1.png)](https://github.com/Muvidevelopers/APISDKSample/blob/master/Screenshot_1.png)
-[![mutt dark](https://github.com/Muvidevelopers/APISDKSample/blob/master/Screenshot_2.png)](https://github.com/Muvidevelopers/APISDKSample/blob/master/Screenshot_2.png)
+[![mutt dark](https://github.com/Muvidevelopers/APISDKSample/blob/master/screenshot1.jpg)](https://github.com/Muvidevelopers/APISDKSample/blob/master/screenshot1.jpg)
+[![mutt dark](https://github.com/Muvidevelopers/APISDKSample/blob/master/screenshot2.jpg)](https://github.com/Muvidevelopers/APISDKSample/blob/master/screenshot2.jpg)

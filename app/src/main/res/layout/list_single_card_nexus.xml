@@ -21,7 +21,7 @@
             android:layout_height="@dimen/list_singlecard_img_height"
             android:layout_alignParentTop="true"
             android:adjustViewBounds="true"
-            android:src="@drawable/logo"
+            android:src="@drawable/new_logo"
             />
 
         <ImageView

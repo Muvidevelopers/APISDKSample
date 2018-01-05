@@ -11,27 +11,27 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.home.apisdk.apiController.CheckGeoBlockCountryAsynTask;
-import com.home.apisdk.apiController.GetGenreListAsynctask;
-import com.home.apisdk.apiController.GetIpAddressAsynTask;
-import com.home.apisdk.apiController.GetLanguageListAsynTask;
-import com.home.apisdk.apiController.GetPlanListAsynctask;
-import com.home.apisdk.apiController.GetTranslateLanguageAsync;
-import com.home.apisdk.apiController.GetUserProfileAsynctask;
-import com.home.apisdk.apiController.IsRegistrationEnabledAsynTask;
-import com.home.apisdk.apiController.SDKInitializer;
-import com.home.apisdk.apiModel.CheckGeoBlockInputModel;
-import com.home.apisdk.apiModel.CheckGeoBlockOutputModel;
-import com.home.apisdk.apiModel.GenreListInput;
-import com.home.apisdk.apiModel.GenreListOutput;
-import com.home.apisdk.apiModel.Get_UserProfile_Input;
-import com.home.apisdk.apiModel.Get_UserProfile_Output;
-import com.home.apisdk.apiModel.IsRegistrationEnabledInputModel;
-import com.home.apisdk.apiModel.IsRegistrationEnabledOutputModel;
-import com.home.apisdk.apiModel.LanguageListInputModel;
-import com.home.apisdk.apiModel.LanguageListOutputModel;
-import com.home.apisdk.apiModel.SubscriptionPlanInputModel;
-import com.home.apisdk.apiModel.SubscriptionPlanOutputModel;
+import com.release.muvisdk.api.apiController.CheckGeoBlockCountryAsynTask;
+import com.release.muvisdk.api.apiController.GetGenreListAsynctask;
+import com.release.muvisdk.api.apiController.GetIpAddressAsynTask;
+import com.release.muvisdk.api.apiController.GetLanguageListAsynTask;
+import com.release.muvisdk.api.apiController.GetPlanListAsynctask;
+import com.release.muvisdk.api.apiController.GetTranslateLanguageAsync;
+import com.release.muvisdk.api.apiController.GetUserProfileAsynctask;
+import com.release.muvisdk.api.apiController.IsRegistrationEnabledAsynTask;
+import com.release.muvisdk.api.apiController.SDKInitializer;
+import com.release.muvisdk.api.apiModel.CheckGeoBlockInputModel;
+import com.release.muvisdk.api.apiModel.CheckGeoBlockOutputModel;
+import com.release.muvisdk.api.apiModel.GenreListInput;
+import com.release.muvisdk.api.apiModel.GenreListOutput;
+import com.release.muvisdk.api.apiModel.Get_UserProfile_Input;
+import com.release.muvisdk.api.apiModel.Get_UserProfile_Output;
+import com.release.muvisdk.api.apiModel.IsRegistrationEnabledInputModel;
+import com.release.muvisdk.api.apiModel.IsRegistrationEnabledOutputModel;
+import com.release.muvisdk.api.apiModel.LanguageListInputModel;
+import com.release.muvisdk.api.apiModel.LanguageListOutputModel;
+import com.release.muvisdk.api.apiModel.SubscriptionPlanInputModel;
+import com.release.muvisdk.api.apiModel.SubscriptionPlanOutputModel;
 import com.muvi.apisdksampleapp.R;
 import com.muvi.apisdksampleapp.model.LanguageModel;
 import com.muvi.apisdksampleapp.network.NetworkStatus;
@@ -48,7 +48,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executor;
 
-import static com.home.apisdk.apiController.HeaderConstants.RATING;
+import static com.release.muvisdk.api.apiController.HeaderConstants.RATING;
 import static com.muvi.apisdksampleapp.preferences.LanguagePreference.DEFAULT_FILTER_BY;
 import static com.muvi.apisdksampleapp.preferences.LanguagePreference.DEFAULT_GEO_BLOCKED_ALERT;
 import static com.muvi.apisdksampleapp.preferences.LanguagePreference.DEFAULT_GOOGLE_FCM_TOKEN;
@@ -254,7 +254,7 @@ public class SplashScreen extends Activity implements GetIpAddressAsynTask.IpAdd
        // languagePreference.setLanguageSharedPrefernce(HAS_FAVORITE, "" + isRegistrationEnabledOutputModel.getHas_favourite());
         languagePreference.setLanguageSharedPrefernce(RATING, "" + isRegistrationEnabledOutputModel.getRating());
 
-        languagePreference.setLanguageSharedPrefernce(IS_RESTRICT_DEVICE, isRegistrationEnabledOutputModel.getIsRestrictDevice());
+        languagePreference.setLanguageSharedPrefernce(IS_RESTRICT_DEVICE, ""+isRegistrationEnabledOutputModel.getIsRestrictDevice());
         languagePreference.setLanguageSharedPrefernce(IS_ONE_STEP_REGISTRATION, "" + isRegistrationEnabledOutputModel.getSignup_step());
         languagePreference.setLanguageSharedPrefernce(IS_MYLIBRARY, "" + isRegistrationEnabledOutputModel.getIsMylibrary());
         preferenceManager.setLoginFeatureToPref(isRegistrationEnabledOutputModel.getIs_login());
@@ -513,32 +513,6 @@ public class SplashScreen extends Activity implements GetIpAddressAsynTask.IpAdd
      */
     private void jumpToNextScreen() {
         Intent mIntent;
-        String loggedInStr = preferenceManager.getLoginStatusFromPref();
-        if ((languagePreference.getTextofLanguage(IS_ONE_STEP_REGISTRATION, DEFAULT_IS_ONE_STEP_REGISTRATION)
-                .trim()).equals("1")) {
-            if (loggedInStr != null) {
-                if (isSubscribed.trim().equals("1")) {
-                    mIntent = new Intent(SplashScreen.this, MainActivity.class);
-                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(mIntent);
-                    finish();
-                    overridePendingTransition(0, 0);
-                } else {
-                    mIntent = new Intent(SplashScreen.this, SubscriptionActivity.class);
-                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(mIntent);
-                    finish();
-                    overridePendingTransition(0, 0);
-                }
-            } else {
-                mIntent = new Intent(SplashScreen.this, RegisterActivity.class);
-                mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                overridePendingTransition(0, 0);
-                startActivity(mIntent);
-                finish();
-            }
-
-        } else {
 
             mIntent = new Intent(SplashScreen.this, MainActivity.class);
             mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -546,7 +520,6 @@ public class SplashScreen extends Activity implements GetIpAddressAsynTask.IpAdd
             finish();
             overridePendingTransition(0, 0);
         }
-    }
 
     @Override
     public void onPreExexuteListner() {
@@ -558,21 +531,7 @@ public class SplashScreen extends Activity implements GetIpAddressAsynTask.IpAdd
 
 
         if (NetworkStatus.getInstance().isConnected(this)) {
-            /*if (preferenceManager != null) {
-                String countryCodeStr = preferenceManager.getCountryCodeFromPref();
 
-                if (countryCodeStr == null) {
-                    GetIpAddressAsynTask asynGetIpAddress = new GetIpAddressAsynTask(this, this);
-                    asynGetIpAddress.executeOnExecutor(threadPoolExecutor);
-                } else {
-                    GetIpAddressAsynTask asynGetIpAddress = new GetIpAddressAsynTask(this, this);
-                    asynGetIpAddress.executeOnExecutor(threadPoolExecutor);
-                }
-            } else {
-                GetIpAddressAsynTask asynGetIpAddress = new GetIpAddressAsynTask(this, this);
-                asynGetIpAddress.executeOnExecutor(threadPoolExecutor);
-
-            }*/
             GetIpAddressAsynTask asynGetIpAddress = new GetIpAddressAsynTask(this, this);
             asynGetIpAddress.executeOnExecutor(threadPoolExecutor);
         } else {
