@@ -22,6 +22,10 @@ android {
             debuggable true
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 android {
     useLibrary 'org.apache.http.legacy'
